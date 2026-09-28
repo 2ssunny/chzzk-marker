@@ -20,7 +20,7 @@ async function setup(opts: Parameters<typeof createFakePremiere>[0] = {}) {
   return { fake, bridge, session };
 }
 
-async function syncAndApply(fake: Awaited<ReturnType<typeof setup>>["fake"], bridge: PremiereBridge, session: ImportSession) {
+async function syncAndApply(bridge: PremiereBridge, session: ImportSession) {
   const ctx = (await bridge.getActive())!;
   const info = await bridge.getSequenceInfo(ctx.sequence);
   const plan = session.plan(info, await bridge.getExistingIds(ctx.sequence));
@@ -39,7 +39,7 @@ describe("full import flow against a fake Premiere", () => {
     session.setSync(await bridge.getPlayheadTicks(ctx.sequence), info);
     expect(formatTime(session.offsetSeconds!)).toBe("-04:21:26");
 
-    const { res, plan } = await syncAndApply(fake, bridge, session);
+    const { res, plan } = await syncAndApply(bridge, session);
     expect(summarize(plan).toApply).toBe(8);
     expect(res).toEqual({ added: plan.map((p) => p.marker.id), failed: [], mode: "batch" });
     expect(fake.state.transactions).toEqual(["Import CHZZK markers"]); // one undo step
@@ -63,8 +63,8 @@ describe("full import flow against a fake Premiere", () => {
     session.select("00000000-0000-4000-8000-000000000002");
     const ctx = (await bridge.getActive())!;
     session.setSync(await bridge.getPlayheadTicks(ctx.sequence), await bridge.getSequenceInfo(ctx.sequence));
-    await syncAndApply(fake, bridge, session);
-    const second = await syncAndApply(fake, bridge, session);
+    await syncAndApply(bridge, session);
+    const second = await syncAndApply(bridge, session);
     expect(summarize(second.plan)).toMatchObject({ toApply: 0, duplicate: 8 });
     expect(fake.state.markers).toHaveLength(8);
   });
@@ -76,7 +76,7 @@ describe("full import flow against a fake Premiere", () => {
     fake.state.playhead = secondsToTicks(t("00:54:52"));
     const ctx = (await bridge.getActive())!;
     session.setSync(await bridge.getPlayheadTicks(ctx.sequence), await bridge.getSequenceInfo(ctx.sequence));
-    const { res } = await syncAndApply(fake, bridge, session);
+    const { res } = await syncAndApply(bridge, session);
     expect(res.added).toHaveLength(7);
     expect(res.failed).toEqual([{ id: "00000000-0000-4000-8000-000000000005", error: "cannot create 원주 인구수 / 이터널리턴 드립." }]);
     expect(fake.state.markers).toHaveLength(7);
@@ -89,7 +89,7 @@ describe("full import flow against a fake Premiere", () => {
     fake.state.playhead = secondsToTicks(t("00:54:52"));
     const ctx = (await bridge.getActive())!;
     session.setSync(await bridge.getPlayheadTicks(ctx.sequence), await bridge.getSequenceInfo(ctx.sequence));
-    const { res } = await syncAndApply(fake, bridge, session);
+    const { res } = await syncAndApply(bridge, session);
     expect(res.mode).toBe("per-marker");
     expect(res.added).toHaveLength(8);
     expect(fake.state.markers).toHaveLength(8);

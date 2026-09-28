@@ -283,6 +283,21 @@ describe("CHZZK Edit Marker extension (E2E)", () => {
     await expect.poll(() => items().count()).toBe(11);
   });
 
+  it("fullscreen: overlay moves into the fullscreen player and F8 still works", async () => {
+    await page.click("#fs"); // user gesture
+    await page.waitForFunction(() => !!document.fullscreenElement);
+    await expect
+      .poll(() => page.evaluate(() => document.getElementById("chzzk-edit-marker-host")?.parentElement?.className))
+      .toBe("pzp-pc");
+    await page.keyboard.press("F8");
+    await expect.poll(() => editor().isVisible()).toBe(true);
+    await page.keyboard.press("Escape");
+    await page.evaluate(() => document.exitFullscreen());
+    await expect
+      .poll(() => page.evaluate(() => document.getElementById("chzzk-edit-marker-host")?.parentElement === document.documentElement))
+      .toBe(true);
+  });
+
   it("shows 'CHZZK player not found' when there is no video", async () => {
     await page.evaluate(() => document.querySelectorAll("video").forEach((v) => v.remove()));
     await page.keyboard.press("F8");

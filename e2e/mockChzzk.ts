@@ -41,6 +41,7 @@ video{width:100%;height:100%} .ad{width:2px;height:2px}</style></head><body>
     <h2 class="video_information_title__AbCd1">${VOD_TITLE}</h2>
     <div class="video_information_name__zz"><span class="name_text__qq">치킨쿤</span></div>
     <input id="chat" placeholder="page input">
+    <button id="fs" onclick="document.querySelector('.pzp-pc').requestFullscreen()">fullscreen</button>
   </main>
 </div>
 <script>
