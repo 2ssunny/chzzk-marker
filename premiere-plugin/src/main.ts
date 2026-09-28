@@ -46,6 +46,13 @@ function persist() {
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const show = (el: HTMLElement, on: boolean) => (el.style.display = on ? "" : "none");
+/** Buttons are styled divs (see index.html); "disabled" is a class and clicks on it are ignored. */
+const setEnabled = (id: string, on: boolean) => $(id).classList.toggle("disabled", !on);
+function onClick(id: string, handler: () => void | Promise<void>) {
+  $(id).addEventListener("click", () => {
+    if (!$(id).classList.contains("disabled")) void handler();
+  });
+}
 const tc = (sec: number) => formatTime(sec, { ms: true });
 const tcTicks = (ticks: bigint) => tc(ticksToSeconds(ticks));
 
@@ -109,7 +116,7 @@ function renderLive() {
   $("sequence").textContent = active ? active.sequence.name : "No active sequence";
   const warn = session.sync && seqInfo && !session.syncMatches(seqInfo);
   $("syncWarn").textContent = warn ? `⚠ Sync was made on "${session.sync!.sequenceName}", active sequence differs.` : "";
-  ($("syncHere") as HTMLButtonElement).disabled = !active || !session.selected;
+  setEnabled("syncHere", !!active && !!session.selected);
 }
 
 function renderFile() {
@@ -151,8 +158,8 @@ function renderSync() {
   const s = session.sync;
   $("offset").textContent = s ? formatSignedTime(session.offsetSeconds!, { ms: true }) : "not synced";
   $("syncInfo").textContent = s ? `CHZZK ${tc(s.chzzkTime)}  ↔  Premiere ${tcTicks(BigInt(s.premiereTicks))}  (${s.sequenceName})` : "";
-  ($("gotoSel") as HTMLButtonElement).disabled = !s || !sel;
-  ($("apply") as HTMLButtonElement).disabled = !s || session.markers.length === 0;
+  setEnabled("gotoSel", !!s && !!sel);
+  setEnabled("apply", !!s && session.markers.length > 0);
   renderLive();
 }
 
@@ -273,13 +280,13 @@ function onClear() {
 // ------------------------------------------------------------------ boot
 
 function boot() {
-  $("load").addEventListener("click", () => void onLoad());
-  $("clear").addEventListener("click", onClear);
-  $("syncHere").addEventListener("click", () => void onSyncHere());
-  $("gotoSel").addEventListener("click", () => void onGotoSelected());
-  $("apply").addEventListener("click", () => void onApply());
-  $("confirmYes").addEventListener("click", () => void onConfirm());
-  $("confirmNo").addEventListener("click", () => {
+  onClick("load", onLoad);
+  onClick("clear", onClear);
+  onClick("syncHere", onSyncHere);
+  onClick("gotoSel", onGotoSelected);
+  onClick("apply", onApply);
+  onClick("confirmYes", onConfirm);
+  onClick("confirmNo", () => {
     hideConfirm();
     setStatus("Cancelled.");
   });

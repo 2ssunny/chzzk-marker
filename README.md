@@ -96,7 +96,7 @@ npm run check          # typecheck + unit test + build
 ## 사용법 — Premiere 플러그인 & Sync 방법
 
 1. Premiere에서 원본(다운로드한 MKV 등)을 배치한 시퀀스를 열어 **활성 시퀀스**로 만듭니다.
-2. 패널에서 **Load marker.json** → 확장에서 Export한 JSON 선택.
+2. 패널에서 **Load JSON** → 확장에서 Export한 JSON 선택.
 3. 목록에서 **기준 마커**를 클릭해 선택합니다 (예: `05:16:18`). 구간 마커는 시작 시각이 기준입니다.
 4. Premiere 타임라인에서 **그 마커와 같은 장면**에 playhead를 둡니다 (예: `00:54:52`). 패널의 *Premiere playhead*에 실시간으로 표시됩니다.
 5. **Sync Here** → `offset = premiereSyncTime − chzzkSyncTime` 이 저장되고(예: `-04:21:26.000`), 목록에 각 마커의 Premiere 위치(`→ 00:57:22`)가 표시됩니다.

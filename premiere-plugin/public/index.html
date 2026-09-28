@@ -5,48 +5,50 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!--
+      Buttons are styled <div class="btn">s: UXP renders native <button>s with its own
+      chrome (large, ignores most CSS), so we draw our own for a compact panel.
+    -->
     <div class="app">
-      <div class="title">CHZZK Marker Import</div>
-
-      <div class="toolbar">
-        <button id="load" class="primary">Load marker.json</button>
-        <button id="clear">Clear</button>
+      <div class="header">
+        <div class="title">CHZZK Marker Import</div>
+        <div class="btn primary" id="load" title="Load marker.json">Load JSON</div>
+        <div class="btn" id="clear">Clear</div>
       </div>
 
-      <div id="emptyHint" class="muted">Chrome 확장에서 Export JSON 한 파일을 불러오세요.</div>
+      <div id="emptyHint" class="muted small">Chrome 확장에서 Export JSON 한 파일을 불러오세요.</div>
       <div id="fileInfo">
-        <div class="label">Project</div>
-        <div id="projectTitle" class="strong"></div>
-        <div class="muted small"><span id="markerCount"></span> · <span id="fileName"></span></div>
+        <div id="projectTitle" class="strong ellipsis"></div>
+        <div class="muted small ellipsis"><span id="markerCount"></span> · <span id="fileName"></span></div>
         <div id="warnings" class="warn small"></div>
       </div>
 
-      <div class="section">Markers <span class="muted small">(click to select sync marker)</span></div>
+      <div class="section">MARKERS <span class="hint">클릭해서 Sync 기준 선택</span></div>
       <div id="list" class="list"></div>
 
       <div class="section">SYNC</div>
-      <div class="kv"><span class="label">Selected CHZZK time</span><span id="selTime" class="mono"></span></div>
-      <div class="kv"><span class="label">Premiere playhead</span><span id="playhead" class="mono big"></span></div>
-      <div class="kv"><span class="label">Sequence</span><span id="sequence"></span></div>
+      <div class="kv"><span class="label">Selected</span><span id="selTime" class="mono value ellipsis"></span></div>
+      <div class="kv"><span class="label">Playhead</span><span id="playhead" class="mono value strong"></span></div>
+      <div class="kv"><span class="label">Sequence</span><span id="sequence" class="value ellipsis"></span></div>
+      <div class="kv"><span class="label">Offset</span><span id="offset" class="mono value"></span></div>
       <div class="toolbar">
-        <button id="syncHere" class="primary">Sync Here</button>
-        <button id="gotoSel" title="Move the playhead to the selected marker's mapped time to verify the sync">Go to selected</button>
+        <div class="btn primary" id="syncHere">Sync Here</div>
+        <div class="btn" id="gotoSel" title="Move the playhead to the selected marker's mapped time to verify the sync">Go to selected</div>
       </div>
-      <div class="kv"><span class="label">Offset</span><span id="offset" class="mono"></span></div>
       <div id="syncInfo" class="muted small mono"></div>
       <div id="syncWarn" class="warn small"></div>
 
       <div class="section">APPLY</div>
-      <button id="apply" class="primary wide">Apply All Markers</button>
+      <div class="btn primary wide" id="apply">Apply All Markers</div>
       <div id="confirm" class="confirm">
         <div id="confirmText"></div>
         <div class="toolbar">
-          <button id="confirmYes" class="primary">Continue</button>
-          <button id="confirmNo">Cancel</button>
+          <div class="btn primary" id="confirmYes">Continue</div>
+          <div class="btn" id="confirmNo">Cancel</div>
         </div>
       </div>
-      <div id="result" class="result mono"></div>
-      <div id="status" class="status"></div>
+      <div id="result" class="result mono small"></div>
+      <div id="status" class="status small"></div>
     </div>
     <script src="index.js"></script>
   </body>

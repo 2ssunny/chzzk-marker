@@ -76,6 +76,13 @@ describe("Premiere panel (built bundle, fake Premiere)", () => {
     expect(first).toBe("05:16:00");
   });
 
+  it("Apply / Go to selected are disabled (and inert) before syncing", async () => {
+    expect(await page.locator("#apply").getAttribute("class")).toContain("disabled");
+    expect(await page.locator("#gotoSel").getAttribute("class")).toContain("disabled");
+    await page.click("#apply");
+    expect(await page.locator("#confirm").isVisible()).toBe(false);
+  });
+
   it("select 05:16:18 + Sync Here → offset -04:21:26 and mapped times", async () => {
     await page.locator("#list .row", { hasText: "05:16:18" }).click();
     expect(await page.locator("#selTime").innerText()).toContain("05:16:18.000");
@@ -107,6 +114,10 @@ describe("Premiere panel (built bundle, fake Premiere)", () => {
     expect(m.duration).toBe((30n * TPS).toString());
     expect(m.comments.split("\n")[0]).toBe("CHZZK: 05:18:48.000");
     await page.screenshot({ path: resolve(__dirname, ".artifacts/premiere-panel.png"), fullPage: true });
+    // Typical docked panel size: content must stay usable (page scrolls instead of clipping).
+    await page.setViewportSize({ width: 320, height: 420 });
+    await page.screenshot({ path: resolve(__dirname, ".artifacts/premiere-panel-small.png") });
+    await page.setViewportSize({ width: 380, height: 900 });
   });
 
   it("applying again is blocked by duplicate detection", async () => {
