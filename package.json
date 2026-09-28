@@ -10,7 +10,7 @@
     "build:premiere": "node scripts/build.mjs premiere",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
-    "test:e2e": "node scripts/build.mjs extension && vitest run --config vitest.e2e.config.ts",
+    "test:e2e": "node scripts/build.mjs && vitest run --config vitest.e2e.config.ts",
     "check": "npm run typecheck && npm test && npm run build"
   },
   "devDependencies": {
