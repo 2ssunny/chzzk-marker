@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "CHZZK Edit Marker",
+  "short_name": "CHZZK Marker",
+  "version": "0.1.0",
+  "description": "치지직 다시보기에서 편집 포인트/구간을 기록하고 TXT·JSON으로 내보냅니다 (Premiere Pro 마커 연동).",
+  "minimum_chrome_version": "116",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chzzk.naver.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ]
+}

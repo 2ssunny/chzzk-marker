@@ -1,0 +1,52 @@
+/* UXP-safe CSS: flexbox only, no grid/gap. Compact layout; the whole panel scrolls when short. */
+html, body { height: 100%; }
+body { margin: 0; padding: 0; background: #232323; color: #d8d8d8; font-family: sans-serif; font-size: 11px; overflow-y: auto; }
+.app { padding: 8px 10px 12px; }
+
+.header { display: flex; flex-direction: row; align-items: center; margin-bottom: 6px; }
+.title { flex: 1; font-size: 12px; font-weight: bold; color: #f0f0f0; }
+.header .btn { margin-left: 4px; }
+
+.section { margin: 10px 0 4px; padding-top: 6px; border-top: 1px solid #383838; font-weight: bold; letter-spacing: 1px; font-size: 10px; color: #8f8f8f; }
+.section .hint { font-weight: normal; letter-spacing: 0; color: #6f6f6f; margin-left: 4px; }
+
+.toolbar { display: flex; flex-direction: row; flex-wrap: wrap; margin: 4px 0; }
+.toolbar .btn { margin-right: 4px; margin-bottom: 2px; }
+
+/* Buttons */
+.btn { display: flex; flex-direction: row; justify-content: center; align-items: center;
+  height: 22px; padding: 0 10px; border-radius: 4px; font-size: 11px; white-space: nowrap;
+  background: #3b3b3b; color: #e6e6e6; border: 1px solid #4a4a4a; cursor: pointer; }
+.btn:hover { background: #454545; }
+.btn.primary { background: #2d6fd6; border-color: #2d6fd6; color: #ffffff; }
+.btn.primary:hover { background: #3a7ee6; border-color: #3a7ee6; }
+.btn.wide { width: 100%; box-sizing: border-box; }
+.btn.disabled { opacity: 0.4; cursor: default; }
+.btn.disabled:hover { background: #3b3b3b; }
+.btn.primary.disabled:hover { background: #2d6fd6; }
+
+.label { color: #8f8f8f; font-size: 10px; width: 58px; }
+.value { flex: 1; text-align: right; }
+.strong { font-weight: bold; color: #f0f0f0; }
+.muted { color: #858585; }
+.small { font-size: 10px; }
+.warn { color: #f0b04a; }
+.mono { font-family: Menlo, Consolas, monospace; }
+.ellipsis { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.kv { display: flex; flex-direction: row; align-items: center; margin: 2px 0; }
+
+/* Marker list: grows with the panel but never pushes the controls far away. */
+.list { max-height: 180px; overflow-y: auto; border: 1px solid #383838; border-radius: 4px; background: #1c1c1c; }
+.row { display: flex; flex-direction: row; align-items: center; padding: 3px 6px; border-bottom: 1px solid #2a2a2a; cursor: pointer; }
+.row:hover { background: #262a31; }
+.row.selected { background: #1f3d66; }
+.row .time { font-family: Menlo, Consolas, monospace; margin-right: 6px; white-space: nowrap; }
+.row .summary { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.row .mapped { font-family: Menlo, Consolas, monospace; color: #7ab4ff; margin-left: 6px; white-space: nowrap; }
+.badge { font-size: 8px; font-weight: bold; color: #a9b4ff; border: 1px solid #a9b4ff; border-radius: 3px; padding: 0 3px; margin-right: 6px; }
+
+.confirm { margin-top: 6px; padding: 6px 8px; border: 1px solid #5b8fd9; border-radius: 4px; background: #1d2a3d; white-space: pre-wrap; }
+.result { margin-top: 6px; white-space: pre-wrap; }
+.status { margin-top: 6px; min-height: 14px; white-space: pre-wrap; }
+.status.error { color: #ff6b6b; }
+.status.ok { color: #7ab4ff; }

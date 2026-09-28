@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/2ssunny/chzzk-marker/shared/schema/marker-file.schema.json",
+  "title": "CHZZK Edit Marker file",
+  "description": "Interchange format between the CHZZK Edit Marker Chrome extension and the Premiere Pro plugin. All times are seconds (number, millisecond precision) on the CHZZK VOD timeline.",
+  "type": "object",
+  "required": ["schemaVersion", "projectTitle", "vod", "markers"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "projectTitle": { "type": "string" },
+    "vod": {
+      "type": "object",
+      "required": ["url", "title", "id"],
+      "properties": {
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "id": { "type": ["string", "null"] }
+      }
+    },
+    "markers": { "type": "array", "items": { "$ref": "#/$defs/marker" } },
+    "exportedAt": { "type": "string", "format": "date-time" },
+    "generator": { "type": "string" }
+  },
+  "$defs": {
+    "seconds": { "type": "number", "minimum": 0 },
+    "marker": {
+      "type": "object",
+      "required": ["id", "type", "comment", "createdAt"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["point", "range"] },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "type": { "const": "point" },
+            "time": { "$ref": "#/$defs/seconds" },
+            "pre": { "$ref": "#/$defs/seconds" },
+            "post": { "$ref": "#/$defs/seconds" }
+          },
+          "required": ["time", "pre", "post"]
+        },
+        {
+          "properties": {
+            "type": { "const": "range" },
+            "start": { "$ref": "#/$defs/seconds" },
+            "end": { "$ref": "#/$defs/seconds" }
+          },
+          "required": ["start", "end"]
+        }
+      ]
+    }
+  }
+}
