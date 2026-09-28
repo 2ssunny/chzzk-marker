@@ -1,0 +1,27 @@
+{
+  "name": "chzzk-edit-marker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mark edit points on CHZZK VODs and import them as Premiere Pro markers.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:extension": "node scripts/build.mjs extension",
+    "build:premiere": "node scripts/build.mjs premiere",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:e2e": "node scripts/build.mjs extension && vitest run --config vitest.e2e.config.ts",
+    "check": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@adobe/cc-ext-uxp-types": "^7.3.1",
+    "@adobe/premierepro": "^26.5.0",
+    "@types/chrome": "^0.3.0",
+    "@types/node": "^26.6.3",
+    "ajv": "^8.20.0",
+    "esbuild": "^0.28.2",
+    "playwright-core": "^1.63.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}
